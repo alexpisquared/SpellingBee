@@ -1,0 +1,44 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:src="clr-namespace:SpellingBee"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Models="clr-namespace:SpellingBee.Model.Models" mc:Ignorable="d" x:Class="SpellingBee.TakeInNewBatch"
+        Title="MainWindow" Height="900" Width="600" x:Name="mw" 
+				WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="CanResizeWithGrip" >
+  <Window.Resources>
+    <src:TextToBoolConverter x:Key="TextToBoolConverter"/>
+    <CollectionViewSource x:Key="lkuLanguageViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:LkuLanguage}, CreateList=True}"/>
+  </Window.Resources>
+  <Border BorderBrush="#888" BorderThickness="3" CornerRadius="8">
+    <Border.Background>
+      <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF5C5C8D" Offset="0"/>
+        <GradientStop Color="#FFB9B9F0" Offset="1"/>
+      </LinearGradientBrush>
+    </Border.Background>
+
+    <Grid Margin="6">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="241*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <TextBlock TextWrapping="Wrap" Text="TextBlock" Background="#f8f4ff" x:Name="tbWords" Margin="6"/>
+      </ScrollViewer>
+
+      <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" DataContext="{StaticResource lkuLanguageViewSource}" Margin="6" >
+        <Button Content="May 2019 addition" Click="Button_Click" />
+        <Label Content="Batch _Name: " Target="{Binding ElementName=tbBn}"/>
+        <TextBox x:Name="tbBn" MinWidth="99" VerticalAlignment="Top"/>
+        <Label Content="  _Language: " Target="{Binding ElementName=cbLg}"/>
+        <ListBox  x:Name="lkuLanguageListBox"  DisplayMemberPath="Desc" Height="60" ItemsSource="{Binding}" SelectedValuePath="Desc" Width="100" />
+        <Button Content="_Save" Width="70" Click="OnSave" IsEnabled="{Binding Text, Converter={StaticResource TextToBoolConverter}, ElementName=tbBn}" IsDefault="True" />
+      </StackPanel>
+    </Grid>
+  </Border>
+</Window>

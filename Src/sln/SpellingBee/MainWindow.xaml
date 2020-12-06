@@ -1,0 +1,180 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:src="clr-namespace:SpellingBee" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Models="clr-namespace:SpellingBee.Model.Models" mc:Ignorable="d" x:Class="SpellingBee.MainWindow"
+        Title="MainWindow" Height="520" Width="1200"
+				x:Name="mw" Loaded="Window_Loaded"
+				WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="CanResizeWithGrip"
+				AllowDrop="True" Drop="mw_Drop_1" Icon="bee (1).ico">
+  <Window.Resources>
+    <src:TextToPromptConverter x:Key="dateConverter"/>
+    <src:TextToBoolConverter x:Key="TextToBoolConverter"/>
+    <CollectionViewSource x:Key="lkuLanguageViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:LkuLanguage}, CreateList=True}"/>
+  </Window.Resources>
+  <Viewbox>
+    <Border Height="260" Width="600" BorderBrush="#0066cc" BorderThickness="1" CornerRadius="8 8 0 8">
+      <Border.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+          <GradientStop Color="#0080ff" Offset="0"/>
+          <GradientStop Color="#000" Offset="1"/>
+        </LinearGradientBrush>
+      </Border.Background>
+      <Grid >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="50"/>
+          <ColumnDefinition Width="10"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="10"/>
+          <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="0"/>
+          <RowDefinition Height="4"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="4"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Grid.RowSpan="5">
+          <Rectangle.Fill>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+              <GradientStop Color="#bdf" Offset="0"/>
+              <GradientStop Color="#cde" Offset="1"/>
+            </LinearGradientBrush>
+          </Rectangle.Fill>
+        </Rectangle>
+
+        <Ellipse   Grid.ColumnSpan="1" Grid.Row="1" Margin="5" Fill="#bdf"/>
+        <Image     Grid.ColumnSpan="1" Grid.Row="1" Margin="11" Source="check-spelling.ico" />
+
+        <TextBlock  x:Name="VersioInfo" Text="123" Foreground="#ccc" FontSize="6" Margin="3" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.ColumnSpan="5" Grid.RowSpan="2" TextAlignment="Right"  />
+
+        <TextBlock Grid.Column="2" Grid.Row="1" Foreground="#bdf" FontWeight="Medium" FontSize="30" VerticalAlignment="Top"     Grid.ColumnSpan="5" Margin="-6" HorizontalAlignment="Left" Text="{Binding CurUser, ElementName=mw, FallbackValue='Nadine'}" />
+
+        <Grid Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Label      Grid.Row="0" Content="Done                     To Do                  Score (%)" Foreground="#ddd" FontSize="8" HorizontalAlignment="Center" Margin="0 -3 0 -3"/>
+          <TextBlock  Grid.Row="1" Text="{Binding InfoMsg, ElementName=mw, FallbackValue='  6     37     100 '}"       Foreground="#fff" FontWeight="Medium" FontSize="16" HorizontalAlignment="Center" FontFamily="Consolas" />
+          <!--<Label      Grid.Row="2" Content="Score"          Foreground="#ddd" FontSize="8" HorizontalAlignment="Center" Margin="0 -3 0 -6"/>
+          <TextBlock  Grid.Row="3" Text="{Binding Details, ElementName=mw, FallbackValue='0 / 0 '}"  Foreground="#fff" FontWeight="Medium" FontSize="12" HorizontalAlignment="Center" />-->
+        </Grid>
+
+
+        <Border Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" Grid.RowSpan="1" CornerRadius="5" BorderBrush="#08f" BorderThickness="0" >
+          <Grid >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="{Binding Correctn, ElementName=mw, FallbackValue=WWWWWWWW}"              Foreground="#0c0" FontSize="18" Grid.Column="1" />
+            <TextBlock Grid.Row="0" Text=" &lt;- right"   HorizontalAlignment="Left"  VerticalAlignment="Center"	 Foreground="#888" FontSize="8"  Grid.Column="2" Visibility="{Binding CorrectionVisibility, ElementName=mw}" />
+            <TextBlock Grid.Row="1" Text="wrong -&gt; "   HorizontalAlignment="Right" VerticalAlignment="Center"   Foreground="#888" FontSize="8"  Visibility="{Binding CorrectionVisibility, ElementName=mw}" />
+            <TextBlock Grid.Row="1" Text="{Binding Erroneus, ElementName=mw, FallbackValue=WWWWWWWW}"              Foreground="#c40" FontSize="18" Grid.Column="1"              />
+            <Button    Background="Transparent" HorizontalAlignment="Right" Foreground="Red" Content="_Badly Said" x:Name="btnBadSay" Height="22" Visibility="Collapsed" Click="btnBadSay_Click_1" Grid.Column="2" Grid.RowSpan="2"  />
+          </Grid>
+        </Border>
+
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Answer, ElementName=mw, FallbackValue=ttt, UpdateSourceTrigger=PropertyChanged}" x:Name="t1" HorizontalContentAlignment="Center" FontSize="22" Grid.ColumnSpan="3" 
+                 Background="Transparent" Foreground="#0066cc"
+                 BorderThickness="0"/>
+        <StackPanel Grid.Column="2" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="115,0" >
+          <Button Content="{Binding Answer, Converter={StaticResource dateConverter}, ElementName=mw}" Width="75" Height="22" IsDefault="True" Click="onEnter" Background="Transparent" Foreground="#0066cc" />
+          <!--<Button Content="_Re-Read" Width="75" Height="22" Click="onReRead" ToolTip="F5"/>-->
+        </StackPanel>
+
+        <ListBox Grid.Column="1" Grid.Row="6" Background="#ddd" x:Name="listBox1" HorizontalContentAlignment="Center" Margin="0,0,0,4" Visibility="Collapsed" Grid.ColumnSpan="3"/>
+
+        <Border Grid.Column="0" Grid.Row="8" HorizontalAlignment="Stretch" Grid.ColumnSpan="5" CornerRadius="0 0 7 7" >
+          <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+              <GradientStop Color="DodgerBlue" Offset="0"/>
+              <GradientStop Color="#248"    Offset="1"/>
+            </LinearGradientBrush>
+          </Border.Background>
+
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DataContext="{StaticResource lkuLanguageViewSource}" >
+            <StackPanel.Resources>
+              <Style TargetType="Label">
+                <Setter Property="FontSize" Value="8" />
+              </Style>
+              <Style TargetType="ComboBox">
+                <Setter Property="FontSize" Value="8" />
+              </Style>
+              <Style TargetType="Button">
+                <Setter Property="FontSize" Value="8" />
+              </Style>
+              <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="8" />
+              </Style>
+              <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="8" />
+              </Style>
+              <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderStyle">
+                <Setter Property="FontSize"   Value="13" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                      <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="#eee" />
+                        <GradientStop Offset="1" Color="#ddd" />
+                      </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="#777" />
+                <Setter Property="Padding"    Value="3 0" />
+              </Style>
+
+            </StackPanel.Resources>
+            <Viewbox     Width="60" Height="30" >
+              <DataGrid Width="180" Height="90" x:Name="dg1" AutoGenerateColumns="True" ItemsSource="{Binding}" Background="Transparent" BorderBrush="Transparent" HeadersVisibility="Column" 
+                        GridLinesVisibility="None" ColumnWidth="Auto" VerticalScrollBarVisibility="Disabled" RowBackground="Transparent" Foreground="#fff" 
+                        ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}" />
+            </Viewbox>
+
+            <Label Content="_User:" Target="{Binding ElementName=nu}" VerticalAlignment="Center" Foreground="#0059b2" />
+
+            <TextBox   Background="Transparent" Text="{Binding NewUser, ElementName=mw, FallbackValue=Nadine}" Foreground="#fff" Width="50" HorizontalContentAlignment="Center" BorderBrush="Transparent" VerticalAlignment="Center" x:Name="nu" FontWeight="Medium" Margin="0,16,0,15"/>
+            <!--<ComboBox  Width="110" Height="25" Name="cbu" ItemsSource="{Binding}" SelectedValuePath="NewUser" DisplayMemberPath="NewUser"  Background="Transparent" BorderBrush="Transparent" />-->
+
+            <Button Content=" _Change " Click="Button_Click_3" VerticalAlignment="Center" Background="Transparent" Foreground="#0066cc" ToolTip="Change user" IsEnabled="{Binding Text, Converter={StaticResource TextToBoolConverter}, ElementName=nu}" />
+            <Button Content=" _Slower "	Click="Button_Click_1" VerticalAlignment="Center" Background="Transparent" Foreground="#0066cc" ToolTip="Repeat speaking slow" Margin="10 0" />
+
+            <Label Content="_Lang:" Target="{Binding ElementName=lkuL}" VerticalAlignment="Center" Foreground="#0059b2" />
+            <ComboBox x:Name="lkuL" DisplayMemberPath="Desc" ItemsSource="{Binding}" SelectedValuePath="Desc" Width="70" VerticalAlignment="Center" Background="Transparent" Foreground="#0066cc" SelectionChanged="lkuL_SelectionChanged" >
+              <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+              </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <Label Content="Ba_tch:" Target="{Binding ElementName=lkuB}" VerticalAlignment="Center" Foreground="#0059b2" />
+            <ComboBox x:Name="lkuB" Width="70" VerticalAlignment="Center" Background="Transparent" Foreground="#0066cc" SelectionChanged="lkuB_SelectionChanged" >
+              <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+              </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <Button Content=" Add "	  Click="onLoadClipboardIntoDb" VerticalAlignment="Center" Background="Transparent" Foreground="#0d0" ToolTip="Take new words from clipboard" Margin="10 0 "/>
+            <Button Content=" Test "	Click="OnTest"                VerticalAlignment="Center" Background="Transparent" Foreground="#c88" ToolTip="Test" Margin="2" />
+
+          </StackPanel>
+        </Border>
+
+      </Grid>
+    </Border>
+  </Viewbox>
+</Window>
