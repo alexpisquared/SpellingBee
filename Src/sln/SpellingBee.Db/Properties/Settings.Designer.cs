@@ -34,7 +34,7 @@ namespace SpellingBee.Db.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("haha")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Note: Relaease-AnyCPU mode is not working - use Release-x86")]
         public string ReadOnlyKey {
             get {
                 return ((string)(this["ReadOnlyKey"]));
